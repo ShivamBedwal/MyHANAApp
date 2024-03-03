@@ -1,32 +1,42 @@
 using FeedService as service from '../../srv/feed-service';
 
 annotate service.Feeds with @(
-    UI.LineItem : [
+    UI.LineItem : [        
         {
             $Type : 'UI.DataField',
-            Label : 'ID',
-            Value : ID,
-        },
-        {
-            $Type : 'UI.DataField',
-            Label : 'date',
+            Label : 'Date',
             Value : date,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'feedNum',
+            Label : 'Feed Number',
             Value : feedNum,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'startTime',
+            Label : 'Start Time',
             Value : startTime,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'endTime',
+            Label : 'End Time',
             Value : endTime,
         },
+        {
+            $Type : 'UI.DataField',
+            Label : 'Milk Type',
+            Value : milkType,
+        },
+        {
+            $Type : 'UI.DataField',
+            Label : 'Quantity',
+            Value : quantity,
+        },
+        {
+            $Type : 'UI.DataField',
+            Label : 'Total',
+            Value : total,
+        }
     ]
 );
 annotate service.Feeds with @(
@@ -40,54 +50,59 @@ annotate service.Feeds with @(
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'date',
+                Label : 'Date',
                 Value : date,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'feedNum',
+                Label : 'Feed Number',
                 Value : feedNum,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'startTime',
+                Label : 'Start Time',
                 Value : startTime,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'endTime',
+                Label : 'End Time',
                 Value : endTime,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'milkType',
+                Label : 'Milk Type',
                 Value : milkType,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'quantity',
+                Label : 'Quantity',
                 Value : quantity,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'medicine',
+                Label : 'Medicine',
                 Value : medicine,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'temperature',
+                Label : 'Temperature',
                 Value : temperature,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'urinePassed',
+                Label : 'Urine',
                 Value : urinePassed,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'motionPassed',
+                Label : 'Motion',
                 Value : motionPassed,
             },
+            {
+                $Type : 'UI.DataField',
+                Label : 'Total',
+                Value : total,
+            }
         ],
     },
     UI.Facets : [
