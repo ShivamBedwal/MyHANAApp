@@ -17,23 +17,11 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "/odata/v4/feed/",
+                "uri": "odata/v4/feed/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],
                     "odataVersion": "4.0"
-                }
-            }
-        },
-        "crossNavigation": {
-            "inbounds": {
-                "Risks-display": {
-                    "signature": {
-                        "parameters": {},
-                        "additionalParameters": "allowed"
-                    },
-                    "semanticObject": "Feeds",
-                    "action": "display"
                 }
             }
         }
