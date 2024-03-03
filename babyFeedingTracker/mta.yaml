@@ -1,40 +1,137 @@
-_schema-version: '3.1'
+_schema-version: "3.1"
 ID: babyFeedingTracker
+description: Baby feeding tracker
 version: 1.0.0
-description: "Baby feeding tracker"
+modules:
+- name: babyFeedingTracker-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: babyFeedingTracker-db
+  - name: uaa_babyFeedingTracker
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm
+- name: babyFeedingTracker-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: babyFeedingTracker-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: babyFeedingTracker-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: babyFeedingTracker-destination-service
+    parameters:
+      content-target: true
+  - name: babyFeedingTracker_html_repo_host
+    parameters:
+      service-key:
+        name: babyFeedingTracker_html_repo_host-key
+  - name: uaa_babyFeedingTracker
+    parameters:
+      service-key:
+        name: uaa_babyFeedingTracker-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: feedRouter_babyFeedingTracker_html_repo_host
+          ServiceInstanceName: babyFeedingTracker-html5-app-host-service
+          ServiceKeyName: babyFeedingTracker_html_repo_host-key
+          sap.cloud.service: feedRouter
+        - Authentication: OAuth2UserTokenExchange
+          Name: feedRouter_uaa_babyFeedingTracker
+          ServiceInstanceName: babyFeedingTracker-xsuaa-service
+          ServiceKeyName: uaa_babyFeedingTracker-key
+          sap.cloud.service: feedRouter
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: babyFeedingTracker-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: babyFeedingTracker_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - sbfeedui.zip
+      name: sbfeedui
+      target-path: resources/
+- name: sbfeedui
+  type: html5
+  path: app/feedui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: babyFeedingTracker-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: babyFeedingTracker-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: babyFeedingTracker-srv-api
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: babyFeedingTracker-destination-service
+    service-plan: lite
+  requires:
+  - name: srv-api
+- name: babyFeedingTracker_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: babyFeedingTracker-html5-app-host-service
+    service-plan: app-host
+- name: uaa_babyFeedingTracker
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: babyFeedingTracker-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: babyFeedingTracker-xsuaa-service
+    service-plan: application
 parameters:
+  deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-    - builder: custom
-      commands:
-        - npx cds build --production
-modules:
-  - name: babyFeedingTracker-srv
-    type: nodejs
-    path: gen/srv
-    parameters:
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: babyFeedingTracker-db
-
-  - name: babyFeedingTracker-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: babyFeedingTracker-db
-
-resources:
-  - name: babyFeedingTracker-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
+  - builder: custom
+    commands:
+    - npx cds build --production
