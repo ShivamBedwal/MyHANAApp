@@ -15,6 +15,7 @@ entity Feed {
       temperature  : String;
       urinePassed  : Passed;
       motionPassed : Passed;
+      total        : Integer;
 }
 
 type Passed : String(1) enum {
