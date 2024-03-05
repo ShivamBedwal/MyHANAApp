@@ -3,7 +3,7 @@ using FeedService as service from '../../srv/feed-service';
 annotate service.Feeds with @(UI.PresentationVariant: {
     SortOrder     : [
         {
-            Property  : date,
+            Property  : feedDate,
             Descending: true
         },
         {
@@ -11,15 +11,15 @@ annotate service.Feeds with @(UI.PresentationVariant: {
             Descending: true
         }
     ],
-    GroupBy       : [date],
+    GroupBy       : [feedDate],
     Visualizations: ['@UI.LineItem']
 });
 
 annotate service.Feeds with @(UI.LineItem: [
     {
         $Type: 'UI.DataField',
-        Label: 'Date',
-        Value: date,
+        Label: 'Feed Date',
+        Value: feedDate,
     },
     {
         $Type: 'UI.DataField',
@@ -28,13 +28,13 @@ annotate service.Feeds with @(UI.LineItem: [
     },
     {
         $Type: 'UI.DataField',
-        Label: 'Start Time',
-        Value: startTime,
+        Label: 'Start Date Time',
+        Value: startTimeStamp,
     },
     {
         $Type: 'UI.DataField',
-        Label: 'End Time',
-        Value: endTime,
+        Label: 'End Date Time',
+        Value: endTimeStamp,
     },
     {
         $Type: 'UI.DataField',
@@ -56,16 +56,11 @@ annotate service.Feeds with @(UI.LineItem: [
 annotate service.Feeds with @(
     UI.FieldGroup #GeneratedGroup1: {
         $Type: 'UI.FieldGroupType',
-        Data : [
+        Data : [            
             {
                 $Type: 'UI.DataField',
-                Label: 'ID',
-                Value: ID,
-            },
-            {
-                $Type: 'UI.DataField',
-                Label: 'Date',
-                Value: date,
+                Label: 'Feed Date',
+                Value: feedDate,
             },
             {
                 $Type: 'UI.DataField',
@@ -74,13 +69,13 @@ annotate service.Feeds with @(
             },
             {
                 $Type: 'UI.DataField',
-                Label: 'Start Time',
-                Value: startTime,
+                Label: 'Start Date Time',
+                Value: startTimeStamp,
             },
             {
                 $Type: 'UI.DataField',
-                Label: 'End Time',
-                Value: endTime,
+                Label: 'End Date Time',
+                Value: endTimeStamp,
             },
             {
                 $Type: 'UI.DataField',
